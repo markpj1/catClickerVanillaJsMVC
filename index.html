@@ -8,6 +8,7 @@
       font-size: 30px;
     }
   </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   
 </head>
 <body>
@@ -20,10 +21,21 @@
           <h2 id="cat-count"></h2>
           <img src="" alt="" id="cat-image">
       </div>
+      <button id='admin-button'>open admin</button>
+      
+      <div id='admin'>
+        <form id='id-form'>
+          <p>cat name<input type='text' id='adminCatName'></p>
+          <p>cat image<input type='src' id='adminCatImg'></p>          
+          <p>cat count<input type='text' id='adminClickCount'></p>
+        </form>
+        <button id='admin-save'>Submit</button>
+        <button id='admin-cancel'>Cancel</button>
+      </div>
     
 	
 
-<!--    // <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->
+    
   <script type="text/javascript" src="script.js"></script>
 
 </body>

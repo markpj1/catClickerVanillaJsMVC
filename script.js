@@ -1,6 +1,7 @@
 
 var model = {
-  currentCat: null,	
+  currentCat: null,
+  adminShow: false, //hides display area	
   cats: [
 	{
 	  name: 'catOne',
@@ -24,7 +25,7 @@ var model = {
 	},
 	{
 	  name: 'catFive',
-	  imgSrc:  'img/catFive.jpeg',
+	  imgSrc:'img/catFive.jpeg',
 	  clickCount: 0
 	}
   ]
@@ -35,8 +36,11 @@ var controller = {
 	init: function () {
 	  model.currentCat = model.cats[0]	
 	  console.log('sets current cat to first property in Obj',model.currentCat);
-	  catView.init();
+	  
 	  catListView.init();
+	  catView.init();
+	  adminView.init();
+	  adminView.hide();
 	},
     //gets current property of models.currentCat.  
 	getCurrentCat: function () {
@@ -55,7 +59,32 @@ var controller = {
 	incrementCounter: function () {
 		model.currentCat.clickCount += 1;
 		catView.render();
-	}	
+	},
+
+	adminDisplay: function () {
+		if(model.adminShow === false) {
+			model.adminShow = true;
+			adminView.show();
+		}
+		else if (model.adminShow === true) {
+			model.adminShow = false;
+			adminView.hide();
+		}
+	},
+
+	adminCancel: function () {
+		adminView.hide()
+	},
+
+	adminSave: function () {
+		model.currentCat.name = adminCatName.value;
+		model.currentCat.imgSrc = adminCatImg.value;
+		model.currentCat.clickCount = adminClickCount.value;
+		catView.render();
+		catListView.render();
+		adminView.hide();
+	}
+
 };//controller end
 
 var catView = {
@@ -120,7 +149,8 @@ var catListView = {
 				return function () {
 					controller.setCurrentCat(catCopy);
 					catView.render();
-				}
+					//controller.incrementCounter();
+				};
  			})(cat));
 
 			
@@ -135,10 +165,55 @@ var catListView = {
   
 };//End catListView
 
+var adminView = {
+
+	init: function () {
+		this.adminCatName = document.getElementById('adminCatName');
+		this.adminCatImg = document.getElementById('adminCatImg');
+		this.adminClickCount = document.getElementById('adminClickCount');
+		var admin = document.getElementById('admin');
+		this.adminBtn = document.getElementById('admin-button');
+        this.adminCancel = document.getElementById('admin-cancel'); 
+		this.adminSave = document.getElementById('admin-save');
+		
+		this.adminBtn.addEventListener('click', function () {
+			controller.adminDisplay();
+		});
+
+		this.adminCancel.addEventListener('click', function () {
+			controller.adminCancel();
+		});
+
+		this.adminSave.addEventListener('click', function () {
+			controller.adminSave();
+		});
+
+		this.render();
+	},
+
+	render: function () {
+		var currentCat = controller.getCurrentCat();
+        console.log('current', currentCat);
+		 //calls current cat
+		this.adminCatName.value = currentCat.name;
+		this.adminCatImg.value = currentCat.imgSrc;
+		this.adminClickCount.value = currentCat.clickCount;		
+
+	},
+	
+	show: function () {
+		admin.style.display = 'block';
+	},
+	
+	hide: function () {
+		admin.style.display = 'none';
+	}
+};
+
 
 
 	
 
-controller.init();
+$(controller.init());
 //controller.init();
 //Document.ready
